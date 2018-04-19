@@ -1,6 +1,6 @@
 # TrueObjectStore
 
-This project wraps https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API[IndexedDB] so objects can be stored and loaded as objects (and not as data structures).
+This project wraps [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) so objects can be stored and loaded as objects (and not as data structures).
 
 # License
 
