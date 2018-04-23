@@ -1,4 +1,4 @@
-import Deserializer from '../serializing/Deserializer'
+import {Deserializer} from '@esentri/de-serializer'
 import AllStrategy from './AllStrategy'
 
 export default class OldBrowserAllStrategy<TYPE> implements AllStrategy<TYPE> {
@@ -16,7 +16,7 @@ export default class OldBrowserAllStrategy<TYPE> implements AllStrategy<TYPE> {
          idbRequest.onsuccess = (event: any) => {
             let cursor = event.target.result
             if (cursor) {
-               all.push(this.deserializer.do(cursor.value))
+               all.push(this.deserializer.deserialize(cursor.value))
                cursor.continue()
                return
             }

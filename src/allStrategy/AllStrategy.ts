@@ -1,4 +1,4 @@
-import Deserializer from '../serializing/Deserializer'
+import {Deserializer} from '@esentri/de-serializer'
 import OldBrowserAllStrategy from './OldBrowserAllStrategy'
 import ModernBrowserAllStrategy from './ModernBrowserAllStrategy'
 import AutomaticAllStrategy from './AutomaticAllStrategy'

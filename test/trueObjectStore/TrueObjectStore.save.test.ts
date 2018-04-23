@@ -1,8 +1,7 @@
 import TrueObjectStore from '../../src/TrueObjectStore'
 import * as IndexDB from 'fake-indexeddb'
 import TrueObjectStoreBuilder from '../../src/TrueObjectStoreBuilder'
-import {SimpleSerialize} from '../../src/serializing/Serialize'
-import Deserializer from '../../src/serializing/Deserializer'
+import {Deserializer} from '@esentri/de-serializer'
 import SimpleIndexedDBBuilder from '../../src/SimpleIndexedDBBuilder'
 
 class TestClass {

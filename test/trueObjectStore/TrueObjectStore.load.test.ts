@@ -1,7 +1,7 @@
 import TrueObjectStore from '../../src/TrueObjectStore'
 import * as IndexDB from 'fake-indexeddb'
 import TrueObjectStoreBuilder from '../../src/TrueObjectStoreBuilder'
-import Deserializer from '../../src/serializing/Deserializer'
+import {Deserializer} from '@esentri/de-serializer'
 import SimpleIndexedDBBuilder from '../../src/SimpleIndexedDBBuilder'
 
 class KeyClass {
@@ -199,7 +199,7 @@ describe('TrueObjectStore test loading', () => {
          new TrueObjectStoreBuilder<string, KeyClass>()
             .name(objectStoreName)
             .deserializer(Deserializer.simple(KeyClass))
-            .parameters({autoIncrement: true, keyPath: 'key'})
+            .parameters({autoIncrement: true, keyPath: '_key'})
             .oldBrowserSupport(false)
             .build()
       let simpleIndexedDB = new SimpleIndexedDBBuilder()
@@ -231,7 +231,7 @@ describe('TrueObjectStore test loading', () => {
          new TrueObjectStoreBuilder<string, KeyClass>()
             .name(objectStoreName)
             .deserializer(Deserializer.simple(KeyClass))
-            .parameters({autoIncrement: true, keyPath: 'key'})
+            .parameters({autoIncrement: true, keyPath: '_key'})
             .oldBrowserSupport(true)
             .build()
       let simpleIndexedDB = new SimpleIndexedDBBuilder()

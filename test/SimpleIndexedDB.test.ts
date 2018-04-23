@@ -2,7 +2,7 @@ import * as IndexDB from 'fake-indexeddb'
 import SimpleIndexedDBBuilder from '../src/SimpleIndexedDBBuilder'
 import SimpleIndexedDB from '../src/SimpleIndexedDB'
 import TrueObjectStoreBuilder from '../src/TrueObjectStoreBuilder'
-import Deserializer from '../src/serializing/Deserializer'
+import {Deserializer} from '@esentri/de-serializer'
 
 describe('SimpleIndexedDB Test', () => {
 

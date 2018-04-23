@@ -1,4 +1,4 @@
-import Deserializer from '../serializing/Deserializer'
+import {Deserializer} from '@esentri/de-serializer'
 import AllStrategy from './AllStrategy'
 
 export default class AutomaticAllStrategy<TYPE> implements AllStrategy<TYPE> {
@@ -11,7 +11,7 @@ export default class AutomaticAllStrategy<TYPE> implements AllStrategy<TYPE> {
 
    all(objectStore: IDBObjectStore): Promise<Array<TYPE>> {
       if ('getAll' in objectStore)
-         return AllStrategy.modernBrowsers(this.deserializer).all(objectStore)
-      return AllStrategy.oldBrowsers(this.deserializer).all(objectStore)
+         return AllStrategy.modernBrowsers<TYPE>(this.deserializer).all(objectStore)
+      return AllStrategy.oldBrowsers<TYPE>(this.deserializer).all(objectStore)
    }
 }

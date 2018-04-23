@@ -1,5 +1,4 @@
-import Serialize, {SimpleSerialize} from './serializing/Serialize'
-import Deserializer from './serializing/Deserializer'
+import {Serialize, SimpleSerialize, Deserializer} from '@esentri/de-serializer'
 import {isPrimitive} from 'util'
 import AllStrategy from './allStrategy/AllStrategy'
 
@@ -51,7 +50,7 @@ export default class TrueObjectStore<KEY, TYPE> {
       return new Promise<TYPE>((resolve, reject) => {
          let readRequest = this.objectStoreReadOnly().get(this.idFromKey(key))
          readRequest.onsuccess = (event: any) => {
-            resolve(this.deserializer.do(event.target.result))
+            resolve(this.deserializer.deserialize(event.target.result))
          }
          /* istanbul ignore next */
          readRequest.onerror = error => reject(error)

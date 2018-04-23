@@ -1,6 +1,5 @@
-import Serialize, { SimpleSerialize } from './serializing/Serialize'
+import {Serialize, SimpleSerialize, Deserializer} from '@esentri/de-serializer'
 import TrueObjectStore from './TrueObjectStore'
-import Deserializer from './serializing/Deserializer'
 import AllStrategy from './allStrategy/AllStrategy'
 
 export default class TrueObjectStoreBuilder<KEY, TYPE> {
