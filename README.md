@@ -1,6 +1,20 @@
 # TrueObjectStore
 
-This project wraps [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) so objects can be stored and loaded as objects (and not as data structures).
+This project wraps [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) so objects can be stored and loaded as
+objects (and not as data structures).
+
+In addition promises are used for a better coding flow.
+
+
+# Projects used
+
+* [Typescript Library Starter](https://github.com/alexjoverm/typescript-library-starter)
+  * License: MIT
+  * as a template for the setup
+* [fake-indexeddb](https://github.com/dumbmatter/fakeIndexedDB)
+  * License: Apache 2.0
+  * for testing
+
 
 # License
 
