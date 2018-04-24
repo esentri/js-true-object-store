@@ -1,8 +1,8 @@
 import {Serialize, SimpleSerialize, Deserializer} from '@esentri/de-serializer'
-import TrueObjectStore from './TrueObjectStore'
-import AllStrategy from './allStrategy/AllStrategy'
+import {TrueObjectStore} from './TrueObjectStore'
+import {AllStrategy} from './allStrategy/AllStrategy'
 
-export default class TrueObjectStoreBuilder<KEY, TYPE> {
+export class TrueObjectStoreBuilder<KEY, TYPE> {
    private _name?: string
    private _database?: IDBDatabase
    private _deserializer?: Deserializer<TYPE>

@@ -1,7 +1,7 @@
-import TrueObjectStore from './TrueObjectStore'
-import SimpleIndexedDB from './SimpleIndexedDB'
+import {TrueObjectStore} from './TrueObjectStore'
+import {SimpleIndexedDB} from './SimpleIndexedDB'
 
-export default class SimpleIndexedDBBuilder {
+export class SimpleIndexedDBBuilder {
    private _name?: string
    private _dbVersion?: number
    private _databaseFactory: IDBFactory = window.indexedDB

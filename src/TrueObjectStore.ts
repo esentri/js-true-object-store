@@ -1,8 +1,8 @@
 import {Serialize, SimpleSerialize, Deserializer} from '@esentri/de-serializer'
 import {isPrimitive} from 'util'
-import AllStrategy from './allStrategy/AllStrategy'
+import {AllStrategy} from './allStrategy/AllStrategy'
 
-export default class TrueObjectStore<KEY, TYPE> {
+export class TrueObjectStore<KEY, TYPE> {
    private name: string
    private database?: IDBDatabase
    private parameters: IDBObjectStoreParameters

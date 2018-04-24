@@ -1,5 +1,5 @@
-import TrueObjectStore from '../../src/TrueObjectStore'
-import TrueObjectStoreBuilder from '../../src/TrueObjectStoreBuilder'
+import {TrueObjectStore} from '../../src/TrueObjectStore'
+import {TrueObjectStoreBuilder} from '../../src/TrueObjectStoreBuilder'
 import {SimpleSerialize, Deserializer} from '@esentri/de-serializer'
 
 

@@ -1,8 +1,8 @@
-import TrueObjectStore from '../../src/TrueObjectStore'
+import {TrueObjectStore} from '../../src/TrueObjectStore'
 import * as IndexDB from 'fake-indexeddb'
-import TrueObjectStoreBuilder from '../../src/TrueObjectStoreBuilder'
+import {TrueObjectStoreBuilder} from '../../src/TrueObjectStoreBuilder'
 import {Deserializer} from '@esentri/de-serializer'
-import SimpleIndexedDBBuilder from '../../src/SimpleIndexedDBBuilder'
+import {SimpleIndexedDBBuilder} from '../../src/SimpleIndexedDBBuilder'
 
 class KeyClass {
    private _key: string

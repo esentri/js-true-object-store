@@ -12,6 +12,8 @@ In addition promises are used for a better coding flow.
 
 `npm install @esentri/true-object-store`
 
+`yarn add @esentri/true-object-store`
+
 ## Usage
 
 <details>

@@ -1,6 +1,6 @@
-import TrueObjectStore from './TrueObjectStore'
+import {TrueObjectStore} from './TrueObjectStore'
 
-export default class SimpleIndexedDB {
+export class SimpleIndexedDB {
    private database?: IDBDatabase
    private name: string
    private dbVersion: number

@@ -1,7 +1,7 @@
 import {Deserializer} from '@esentri/de-serializer'
-import AllStrategy from './AllStrategy'
+import {AllStrategy} from './AllStrategy'
 
-export default class ModernBrowserAllStrategy<TYPE> implements AllStrategy<TYPE> {
+export class ModernBrowserAllStrategy<TYPE> implements AllStrategy<TYPE> {
 
    private deserializer: Deserializer<TYPE>
 
