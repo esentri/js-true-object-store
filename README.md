@@ -8,6 +8,10 @@ objects (and not as data structures).
 
 In addition promises are used for a better coding flow.
 
+## Install
+
+`npm install @esentri/true-object-store`
+
 ## Usage
 
 <details>
