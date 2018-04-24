@@ -10,7 +10,11 @@ In addition promises are used for a better coding flow.
 
 ## Usage
 
-### With SimpleIndexedDB
+<details>
+   <summary>
+      With SimpleIndexedDB
+   </summary>
+<p>
 
 ```
 class TestClass {
@@ -43,7 +47,14 @@ simpleIndexedDB.open().then(() => {
 })
 ```
 
-### Without SimpleIndexedDB
+</p>
+</details>
+
+<details>
+   <summary>
+      Without SimpleIndexedDB
+   </summary>
+<p>
 
 ```
 let trueObjectStore = new TrueObjectStoreBuilder().
@@ -63,6 +74,9 @@ trueObjectStore.save(new TestClass('test')).then(() => {
    })
 })
 ```
+
+</p>
+</details>
 
 # Limitations
 
@@ -92,8 +106,6 @@ will fail if you choose `{keyPath: 'key'}'`. You need to select a real field. In
 * [fake-indexeddb](https://github.com/dumbmatter/fakeIndexedDB)
   * License: Apache 2.0
   * for testing against the IndexedDB API
-  
-
 * [Typescript Library Starter](https://github.com/alexjoverm/typescript-library-starter)
   * License: MIT
   * as a template for the setup
