@@ -97,7 +97,8 @@ will fail if you choose `{keyPath: 'key'}'`. You need to select a real field. In
 * [Typescript Library Starter](https://github.com/alexjoverm/typescript-library-starter)
   * License: MIT
   * as a template for the setup
-  * <details>
+
+<details>
    <summary>Typescript Library Starter dependencies</summary>
 
   * [JEST](https://facebook.github.io/jest/)
