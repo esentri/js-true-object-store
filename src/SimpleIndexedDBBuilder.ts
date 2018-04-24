@@ -2,10 +2,10 @@ import TrueObjectStore from './TrueObjectStore'
 import SimpleIndexedDB from './SimpleIndexedDB'
 
 export default class SimpleIndexedDBBuilder {
-   private _name: string
-   private _dbVersion: number
+   private _name?: string
+   private _dbVersion?: number
    private _databaseFactory: IDBFactory = window.indexedDB
-   private _objectStores: Array<TrueObjectStore<any, any>>
+   private _objectStores?: Array<TrueObjectStore<any, any>>
 
    public name(name: string): SimpleIndexedDBBuilder {
       this._name = name
@@ -28,7 +28,7 @@ export default class SimpleIndexedDBBuilder {
    }
 
    public build(): SimpleIndexedDB {
-      return new SimpleIndexedDB(this._name,
+      return new SimpleIndexedDB(this._name!,
          this._dbVersion,
          this._databaseFactory,
          this._objectStores)
