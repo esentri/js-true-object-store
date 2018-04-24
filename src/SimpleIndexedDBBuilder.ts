@@ -4,7 +4,7 @@ import SimpleIndexedDB from './SimpleIndexedDB'
 export default class SimpleIndexedDBBuilder {
    private _name: string
    private _dbVersion: number
-   private _databaseFactory: IDBFactory
+   private _databaseFactory: IDBFactory = window.indexedDB
    private _objectStores: Array<TrueObjectStore<any, any>>
 
    public name(name: string): SimpleIndexedDBBuilder {
