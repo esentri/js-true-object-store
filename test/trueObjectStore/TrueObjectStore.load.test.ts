@@ -39,10 +39,12 @@ class TestClassCustomDeserialize {
       return this.field
    }
 
-   public static deserialize(dataStructure: any): TestClassCustomDeserialize {
-      let deserialized = new TestClassCustomDeserialize()
-      deserialized.field = 'deserialized'
-      return deserialized
+   public static deserialize(dataStructure: any): Promise<TestClassCustomDeserialize> {
+      return new Promise(resolve => {
+         let deserialized = new TestClassCustomDeserialize()
+         deserialized.field = 'deserialized'
+         resolve(deserialized)
+      })
    }
 }
 
@@ -217,12 +219,13 @@ describe('TrueObjectStore test loading', () => {
          Promise.all(promises).then(() => {
             trueObjectStore.all().then(allSaved => {
                expect(allSaved.length).toEqual(4)
+               expect(allSaved[0].key).toBeDefined()
                simpleIndexedDB.close()
                done()
             })
          })
       })
-   })
+   }, 10000)
 
    it('get all old', done => {
       dbVersion++
@@ -249,10 +252,11 @@ describe('TrueObjectStore test loading', () => {
          Promise.all(promises).then(() => {
             trueObjectStore.all().then(allSaved => {
                expect(allSaved.length).toEqual(4)
+               expect(allSaved[0].key).toBeDefined()
                simpleIndexedDB.close()
                done()
             })
          })
       })
-   })
+   }, 10000)
 })

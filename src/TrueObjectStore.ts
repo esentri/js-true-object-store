@@ -39,10 +39,12 @@ export class TrueObjectStore<KEY, TYPE> {
 
    public save(element: TYPE): Promise<void> {
       return new Promise<void>((resolve, reject) => {
-         let idbRequest = this.objectStoreReadWrite().put(this.serialize(element))
-         idbRequest.onsuccess = () => resolve()
-         /* istanbul ignore next */
-         idbRequest.onerror = error => reject(error)
+         this.serialize(element).then(serialized => {
+            let idbRequest = this.objectStoreReadWrite().put(serialized)
+            idbRequest.onsuccess = () => resolve()
+            /* istanbul ignore next */
+            idbRequest.onerror = error => reject(error)
+         })
       })
    }
 
@@ -50,7 +52,9 @@ export class TrueObjectStore<KEY, TYPE> {
       return new Promise<TYPE>((resolve, reject) => {
          let readRequest = this.objectStoreReadOnly().get(this.idFromKey(key))
          readRequest.onsuccess = (event: any) => {
-            resolve(this.deserializer.deserialize(event.target.result))
+            this.deserializer.deserialize(event.target.result).then(deserialized => {
+               resolve(deserialized)
+            })
          }
          /* istanbul ignore next */
          readRequest.onerror = error => reject(error)

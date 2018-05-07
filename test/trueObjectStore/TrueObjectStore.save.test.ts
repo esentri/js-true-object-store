@@ -27,10 +27,12 @@ class TestClassCustomDeserialize {
       return this.field
    }
 
-   public static deserialize(dataStructure: any): TestClassCustomDeserialize {
-      let deserialized = new TestClassCustomDeserialize()
-      deserialized.field = 'deserialized'
-      return deserialized
+   public static deserialize(dataStructure: any): Promise<TestClassCustomDeserialize> {
+      return new Promise(resolve => {
+         let deserialized = new TestClassCustomDeserialize()
+         deserialized.field = 'deserialized'
+         resolve(deserialized)
+      })
    }
 }
 

@@ -43,12 +43,13 @@ describe('AutomaticAllStrategy', () => {
          Promise.all(promises).then(() => {
             trueObjectStore.all().then(allSaved => {
                expect(allSaved.length).toEqual(4)
+               expect(allSaved[0].key).toBeDefined()
                simpleIndexedDB.close()
                done()
             })
          })
       })
-   })
+   }, 10000)
 
    it('old', done => {
       dbVersion++
@@ -76,12 +77,13 @@ describe('AutomaticAllStrategy', () => {
                   .objectStore(objectStoreName)
                delete Object.getPrototypeOf(idbObjectStore)['getAll']
                AllStrategy.automatic(Deserializer.simple(KeyClass)).all(idbObjectStore)
-                  .then(allSaved => {
+                  .then((allSaved: any) => {
                      expect(allSaved.length).toEqual(4)
+                     expect(allSaved[0].key).toBeDefined()
                      done()
                   })
             }
          })
       })
-   })
+   }, 10000)
 })

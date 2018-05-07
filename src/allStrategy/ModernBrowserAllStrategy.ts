@@ -13,9 +13,11 @@ export class ModernBrowserAllStrategy<TYPE> implements AllStrategy<TYPE> {
       return new Promise<Array<TYPE>>((resolve, reject) => {
          let request: IDBRequest = (objectStore as any).getAll()
          request.onsuccess = (event) => {
-            resolve(request.result.map((element: any) => {
-               this.deserializer.deserialize(element)
-            }))
+            let deserializePromises: Array<Promise<TYPE>> = []
+            request.result.forEach((element: any) => {
+               deserializePromises.push(this.deserializer.deserialize(element))
+            })
+            resolve(Promise.all(deserializePromises))
          }
          /* istanbul ignore next */
          request.onerror = (error: any) => reject(error)

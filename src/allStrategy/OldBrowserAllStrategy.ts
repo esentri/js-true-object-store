@@ -12,7 +12,7 @@ export class OldBrowserAllStrategy<TYPE> implements AllStrategy<TYPE> {
    all(objectStore: IDBObjectStore): Promise<Array<TYPE>> {
       return new Promise<Array<TYPE>>((resolve, reject) => {
          let idbRequest = objectStore.openCursor()
-         let all: Array<TYPE> = []
+         let all: Array<Promise<TYPE>> = []
          idbRequest.onsuccess = (event: any) => {
             let cursor = event.target.result
             if (cursor) {
@@ -20,7 +20,7 @@ export class OldBrowserAllStrategy<TYPE> implements AllStrategy<TYPE> {
                cursor.continue()
                return
             }
-            resolve(all)
+            resolve(Promise.all(all))
          }
          /* istanbul ignore next */
          idbRequest.onerror = (error: any) => reject(error)
