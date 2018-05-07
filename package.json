@@ -1,6 +1,6 @@
 {
    "name": "@esentri/true-object-store",
-   "version": "0.2.1",
+   "version": "0.2.2",
    "description": "",
    "keywords": [],
    "main": "dist/true-object-store.umd.js",
@@ -102,6 +102,6 @@
       "validate-commit-msg": "^2.12.2"
    },
    "dependencies": {
-      "@esentri/de-serializer": "^0.0.5"
+      "@esentri/de-serializer": "^0.6.2"
    }
 }
