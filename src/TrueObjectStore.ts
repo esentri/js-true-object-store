@@ -8,14 +8,16 @@ export class TrueObjectStore<KEY, TYPE> {
    private parameters: IDBObjectStoreParameters
    private serialize: Serialize
    private deserializer: Deserializer<TYPE>
+   private type: any
    private allStrategy: AllStrategy<TYPE>
 
-   constructor(name: string,
-               parameters: IDBObjectStoreParameters,
-               deserializer: Deserializer<TYPE>,
-               serialize: Serialize = SimpleSerialize,
-               database?: IDBDatabase,
-               allStrategy: AllStrategy<TYPE> = AllStrategy.oldBrowsers(deserializer)) {
+   constructor (name: string,
+                parameters: IDBObjectStoreParameters,
+                deserializer: Deserializer<TYPE>,
+                serialize: Serialize = SimpleSerialize,
+                database?: IDBDatabase,
+                allStrategy: AllStrategy<TYPE> = AllStrategy.oldBrowsers(deserializer),
+                type: any = null) {
       if (!parameters.keyPath)
          throw new Error('no key path added')
       this.name = name
@@ -24,20 +26,21 @@ export class TrueObjectStore<KEY, TYPE> {
       this.deserializer = deserializer
       this.database = database
       this.allStrategy = allStrategy
+      this.type = type
    }
 
-   __database(database: IDBDatabase) {
+   __database (database: IDBDatabase) {
       this.database = database
    }
 
-   public onUpgradeNeeded(databaseInput?: IDBDatabase) {
+   public onUpgradeNeeded (databaseInput?: IDBDatabase) {
       let database = databaseInput ? databaseInput : this.database
       if (!database)
          throw new Error('No database for onUpgradeNeeded for store ' + this.name)
       database.createObjectStore(this.name, this.parameters)
    }
 
-   public save(element: TYPE): Promise<void> {
+   public save (element: TYPE): Promise<void> {
       return new Promise<void>((resolve, reject) => {
          this.serialize(element).then(serialized => {
             let idbRequest = this.objectStoreReadWrite().put(serialized)
@@ -48,11 +51,17 @@ export class TrueObjectStore<KEY, TYPE> {
       })
    }
 
-   public value(key: KEY): Promise<TYPE> {
+   public value (key: KEY): Promise<TYPE> {
       return new Promise<TYPE>((resolve, reject) => {
          let readRequest = this.objectStoreReadOnly().get(this.idFromKey(key))
          readRequest.onsuccess = (event: any) => {
-            this.deserializer.deserialize(event.target.result).then(deserialized => {
+            if (this.deserializer) {
+               this.deserializer.deserialize(event.target.result).then(deserialized => {
+                  resolve(deserialized)
+               })
+               return
+            }
+            this.type.deserialize(event.target.result).then((deserialized: any) => {
                resolve(deserialized)
             })
          }
@@ -61,7 +70,7 @@ export class TrueObjectStore<KEY, TYPE> {
       })
    }
 
-   private idFromKey(key: KEY): any {
+   private idFromKey (key: KEY): any {
       if (isPrimitive(key)) return key
       let id: any = key
       this.keyPathArray(this.parameters.keyPath!).forEach(
@@ -72,27 +81,27 @@ export class TrueObjectStore<KEY, TYPE> {
       return id
    }
 
-   private keyPathArray(keyPath: string | string[]): Array<string> {
+   private keyPathArray (keyPath: string | string[]): Array<string> {
       if (Array.isArray(keyPath)) return keyPath
       return keyPath.split('.')
    }
 
-   public all(): Promise<Array<TYPE>> {
+   public all (): Promise<Array<TYPE>> {
       this.databaseExists()
       return this.allStrategy.all(this.objectStoreReadOnly())
    }
 
-   private objectStoreReadWrite(): IDBObjectStore {
+   private objectStoreReadWrite (): IDBObjectStore {
       this.databaseExists()
       return this.database!.transaction(this.name, 'readwrite').objectStore(this.name)
    }
 
-   private objectStoreReadOnly(): IDBObjectStore {
+   private objectStoreReadOnly (): IDBObjectStore {
       this.databaseExists()
       return this.database!.transaction(this.name, 'readonly').objectStore(this.name)
    }
 
-   private databaseExists() {
+   private databaseExists () {
       if (!this.database)
          throw new Error('No database set for object store: ' + this.name)
    }

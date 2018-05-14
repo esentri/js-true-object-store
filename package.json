@@ -1,6 +1,6 @@
 {
    "name": "@esentri/true-object-store",
-   "version": "0.2.3",
+   "version": "0.2.4",
    "description": "",
    "keywords": [],
    "main": "dist/true-object-store.umd.js",

@@ -7,6 +7,20 @@ class TestClass {
    public key: string = 'key'
 }
 
+class TestClassWithDeserialize {
+   public key: string = 'key'
+
+   constructor (key: string) {
+      this.key = key
+   }
+
+   public static deserialize (serialized: any): Promise<TestClassWithDeserialize> {
+      return new Promise<TestClassWithDeserialize>(resolve =>
+         resolve(new TestClassWithDeserialize(serialized.key))
+      )
+   }
+}
+
 describe('TrueObjectStore test instantiation', () => {
 
    it('instantiation with defaults', () => {
@@ -58,6 +72,22 @@ describe('TrueObjectStore test instantiation', () => {
 
    it('with builder but without necessary parameters', () => {
       expect(() => new TrueObjectStoreBuilder().build()).toThrow()
+   })
+
+   it('with builder with prototype/deserialize but without deserializer', () => {
+      expect(new TrueObjectStoreBuilder<string, TestClassWithDeserialize>()
+         .name('test')
+         .parameters({keyPath: 'key'})
+         .type(TestClassWithDeserialize)
+         .build()).toBeDefined()
+   })
+
+   it('with builder with prototype without deserialize and without deserializer', () => {
+      expect(() => new TrueObjectStoreBuilder<string, TestClass>()
+         .name('test')
+         .parameters({keyPath: 'key'})
+         .type(TestClass)
+         .build()).toThrow()
    })
 
 })

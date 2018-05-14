@@ -9,38 +9,44 @@ export class TrueObjectStoreBuilder<KEY, TYPE> {
    private _parameters?: IDBObjectStoreParameters
    private _serialize: Serialize = SimpleSerialize
    private _oldBrowserSupport = false
+   private _type?: any = null
 
-   database(database: IDBDatabase): TrueObjectStoreBuilder<KEY, TYPE> {
+   database (database: IDBDatabase): TrueObjectStoreBuilder<KEY, TYPE> {
       this._database = database
       return this
    }
 
-   name(value: string): TrueObjectStoreBuilder<KEY, TYPE> {
+   name (value: string): TrueObjectStoreBuilder<KEY, TYPE> {
       this._name = value
       return this
    }
 
-   parameters(value: IDBObjectStoreParameters): TrueObjectStoreBuilder<KEY, TYPE> {
+   parameters (value: IDBObjectStoreParameters): TrueObjectStoreBuilder<KEY, TYPE> {
       this._parameters = value
       return this
    }
 
-   serialize(value: Serialize): TrueObjectStoreBuilder<KEY, TYPE> {
+   serialize (value: Serialize): TrueObjectStoreBuilder<KEY, TYPE> {
       this._serialize = value
       return this
    }
 
-   deserializer(value: Deserializer<TYPE>): TrueObjectStoreBuilder<KEY, TYPE> {
+   deserializer (value: Deserializer<TYPE>): TrueObjectStoreBuilder<KEY, TYPE> {
       this._deserializer = value
       return this
    }
 
-   oldBrowserSupport(support: boolean): TrueObjectStoreBuilder<KEY, TYPE> {
+   type (value: any): TrueObjectStoreBuilder<KEY, TYPE> {
+      this._type = value
+      return this
+   }
+
+   oldBrowserSupport (support: boolean): TrueObjectStoreBuilder<KEY, TYPE> {
       this._oldBrowserSupport = support
       return this
    }
 
-   build(): TrueObjectStore<KEY, TYPE> {
+   build (): TrueObjectStore<KEY, TYPE> {
       this.checkParameters()
       return new TrueObjectStore<KEY, TYPE>(
          this._name!,
@@ -48,18 +54,24 @@ export class TrueObjectStoreBuilder<KEY, TYPE> {
          this._deserializer!,
          this._serialize,
          this._database,
-         this.allStrategy()
+         this.allStrategy(),
+         this._type
       )
    }
 
-   private allStrategy(): AllStrategy<TYPE> {
-      if(this._oldBrowserSupport) return AllStrategy.oldBrowsers(this._deserializer!)
+   private allStrategy (): AllStrategy<TYPE> {
+      if (this._oldBrowserSupport) return AllStrategy.oldBrowsers(this._deserializer!)
       return AllStrategy.modernBrowsers(this._deserializer!)
    }
 
-   private checkParameters() {
-      if(!this._name || !this._parameters || !this._deserializer)
-         throw Error('You missed to pass a required value: name[' + this._name + '] ' +
-            'parameters[' + this._parameters + '] deserializer[' + this._deserializer + ']')
+   private checkParameters () {
+      if (!this._name || !this._parameters || (!this._deserializer && !this._type))
+         throw new Error('You missed to pass a required value: name[' + this._name + '] ' +
+            'parameters[' + this._parameters + '] deserializer[' + this._deserializer + '] ' +
+            'type[' + this._type + ']')
+      if (!this._deserializer && !this._type['deserialize']) {
+         throw new Error('You neither gave a deserializer nor a type with a static ' +
+            'deserialize method')
+      }
    }
 }

@@ -259,4 +259,31 @@ describe('TrueObjectStore test loading', () => {
          })
       })
    }, 10000)
+
+   it('load object with static deserialize method', done => {
+      dbVersion++
+      let objectStoreName = 'staticDeserialize'
+      let trueObjectStore: TrueObjectStore<string, TestClassCustomDeserialize> =
+         new TrueObjectStoreBuilder<string, TestClassCustomDeserialize>()
+            .name(objectStoreName)
+            .type(TestClassCustomDeserialize)
+            .parameters({autoIncrement: true, keyPath: 'field'})
+            .build()
+      let simpleIndexedDB = new SimpleIndexedDBBuilder()
+         .name(dbName)
+         .databaseFactory(IndexDB.default)
+         .dbVersion(dbVersion)
+         .objectStores([trueObjectStore])
+         .build()
+      simpleIndexedDB.open().then(() => {
+         let savedObject = new TestClassCustomDeserialize()
+         trueObjectStore.save(savedObject).then(() => {
+            trueObjectStore.value(savedObject.value()).then(loadedObject => {
+               expect(loadedObject.value()).toEqual('deserialized')
+               simpleIndexedDB.close()
+               done()
+            })
+         })
+      })
+   })
 })
