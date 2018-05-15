@@ -7,11 +7,11 @@ import {SimpleIndexedDBBuilder} from '../../src/SimpleIndexedDBBuilder'
 class KeyClass {
    private _key: string
 
-   constructor(key: string) {
-      this._key = key;
+   constructor (key: string) {
+      this._key = key
    }
 
-   get key() {
+   get key () {
       return this._key
    }
 }
@@ -23,11 +23,11 @@ class TestClass {
       c: 'nested'
    }
 
-   public setNested(nested: string) {
+   public setNested (nested: string) {
       this.b.c = nested
    }
 
-   public nested() {
+   public nested () {
       return this.b.c
    }
 }
@@ -35,11 +35,11 @@ class TestClass {
 class TestClassCustomDeserialize {
    private field: string = 'init'
 
-   public value(): string {
+   public value (): string {
       return this.field
    }
 
-   public static deserialize(dataStructure: any): Promise<TestClassCustomDeserialize> {
+   public static deserialize (dataStructure: any): Promise<TestClassCustomDeserialize> {
       return new Promise(resolve => {
          let deserialized = new TestClassCustomDeserialize()
          deserialized.field = 'deserialized'
@@ -280,6 +280,37 @@ describe('TrueObjectStore test loading', () => {
          trueObjectStore.save(savedObject).then(() => {
             trueObjectStore.value(savedObject.value()).then(loadedObject => {
                expect(loadedObject.value()).toEqual('deserialized')
+               simpleIndexedDB.close()
+               done()
+            })
+         })
+      })
+   })
+
+   it('load object with deserialize method', done => {
+      dbVersion++
+      let objectStoreName = 'deserializeMethod'
+      let trueObjectStore: TrueObjectStore<string, TestClass> =
+         new TrueObjectStoreBuilder<string, TestClass>()
+            .name(objectStoreName)
+            .deserialize(dataStructure => new Promise(resolve => {
+               let testClass = new TestClass()
+               testClass.setNested('custom method')
+               resolve(testClass)
+            }))
+            .parameters({autoIncrement: true, keyPath: 'key'})
+            .build()
+      let simpleIndexedDB = new SimpleIndexedDBBuilder()
+         .name(dbName)
+         .databaseFactory(IndexDB.default)
+         .dbVersion(dbVersion)
+         .objectStores([trueObjectStore])
+         .build()
+      simpleIndexedDB.open().then(() => {
+         let savedObject = new TestClass()
+         trueObjectStore.save(savedObject).then(() => {
+            trueObjectStore.value(savedObject.key).then(loadedObject => {
+               expect(loadedObject.nested()).toEqual('custom method')
                simpleIndexedDB.close()
                done()
             })

@@ -8,7 +8,6 @@ export class TrueObjectStore<KEY, TYPE> {
    private parameters: IDBObjectStoreParameters
    private serialize: Serialize
    private deserializer: Deserializer<TYPE>
-   private type: any
    private allStrategy: AllStrategy<TYPE>
 
    constructor (name: string,
@@ -16,8 +15,7 @@ export class TrueObjectStore<KEY, TYPE> {
                 deserializer: Deserializer<TYPE>,
                 serialize: Serialize = SimpleSerialize,
                 database?: IDBDatabase,
-                allStrategy: AllStrategy<TYPE> = AllStrategy.oldBrowsers(deserializer),
-                type: any = null) {
+                allStrategy: AllStrategy<TYPE> = AllStrategy.oldBrowsers(deserializer)) {
       if (!parameters.keyPath)
          throw new Error('no key path added')
       this.name = name
@@ -26,7 +24,6 @@ export class TrueObjectStore<KEY, TYPE> {
       this.deserializer = deserializer
       this.database = database
       this.allStrategy = allStrategy
-      this.type = type
    }
 
    __database (database: IDBDatabase) {
@@ -61,9 +58,6 @@ export class TrueObjectStore<KEY, TYPE> {
                })
                return
             }
-            this.type.deserialize(event.target.result).then((deserialized: any) => {
-               resolve(deserialized)
-            })
          }
          /* istanbul ignore next */
          readRequest.onerror = error => reject(error)

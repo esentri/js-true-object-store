@@ -1,4 +1,4 @@
-import {Serialize, SimpleSerialize, Deserializer} from '@esentri/de-serializer'
+import {Serialize, SimpleSerialize, Deserializer, Deserialize} from '@esentri/de-serializer'
 import {TrueObjectStore} from './TrueObjectStore'
 import {AllStrategy} from './allStrategy/AllStrategy'
 
@@ -31,6 +31,13 @@ export class TrueObjectStoreBuilder<KEY, TYPE> {
       return this
    }
 
+   deserialize (value: Deserialize<TYPE>): TrueObjectStoreBuilder<KEY, TYPE> {
+      this._deserializer = {
+         deserialize: value as any
+      }
+      return this
+   }
+
    deserializer (value: Deserializer<TYPE>): TrueObjectStoreBuilder<KEY, TYPE> {
       this._deserializer = value
       return this
@@ -51,11 +58,10 @@ export class TrueObjectStoreBuilder<KEY, TYPE> {
       return new TrueObjectStore<KEY, TYPE>(
          this._name!,
          this._parameters!,
-         this._deserializer!,
+         this._deserializer || Deserializer.simple(this._type),
          this._serialize,
          this._database,
-         this.allStrategy(),
-         this._type
+         this.allStrategy()
       )
    }
 
