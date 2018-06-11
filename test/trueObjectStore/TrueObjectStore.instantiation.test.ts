@@ -82,12 +82,4 @@ describe('TrueObjectStore test instantiation', () => {
          .build()).toBeDefined()
    })
 
-   it('with builder with prototype without deserialize and without deserializer', () => {
-      expect(() => new TrueObjectStoreBuilder<string, TestClass>()
-         .name('test')
-         .parameters({keyPath: 'key'})
-         .type(TestClass)
-         .build()).toThrow()
-   })
-
 })

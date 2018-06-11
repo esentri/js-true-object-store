@@ -75,9 +75,5 @@ export class TrueObjectStoreBuilder<KEY, TYPE> {
          throw new Error('You missed to pass a required value: name[' + this._name + '] ' +
             'parameters[' + this._parameters + '] deserializer[' + this._deserializer + '] ' +
             'type[' + this._type + ']')
-      if (!this._deserializer && !this._type['deserialize']) {
-         throw new Error('You neither gave a deserializer nor a type with a static ' +
-            'deserialize method')
-      }
    }
 }
