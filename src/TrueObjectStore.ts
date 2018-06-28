@@ -85,6 +85,16 @@ export class TrueObjectStore<KEY, TYPE> {
       return this.allStrategy.all(this.objectStoreReadOnly())
    }
 
+   public clear (): Promise<void> {
+      return new Promise<void>((resolve, reject) => {
+         if (!this.database) reject()
+         let idbRequest = this.objectStoreReadWrite().clear()
+         idbRequest.onsuccess = () => resolve()
+         /* istanbul ignore next */
+         idbRequest.onerror = error => reject(error)
+      })
+   }
+
    private objectStoreReadWrite (): IDBObjectStore {
       this.databaseExists()
       return this.database!.transaction(this.name, 'readwrite').objectStore(this.name)

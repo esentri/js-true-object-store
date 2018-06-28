@@ -73,6 +73,7 @@ tests/cases/user/*/**/*.d.ts
 !tests/cases/user/bignumber.js/
 !tests/cases/user/discord.js/
 tests/baselines/reference/dt
+package-lock.json
 
 
 ############

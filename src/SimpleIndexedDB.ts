@@ -32,6 +32,18 @@ export class SimpleIndexedDB {
       this.database.close()
    }
 
+   public clear() {
+      return new Promise<void> ((resolve, reject) => {
+         let promises: Array<Promise<void>> = []
+         this.objectStores.forEach(function (store) {
+            promises.push(store.clear())
+         })
+         /* istanbul ignore next */
+         Promise.all(promises).then(_ => { resolve() })
+            .catch(error => reject(error))
+      })
+   }
+
    private onCreationError(reject: any) {
       /* istanbul ignore next */
       return (event: any) => {

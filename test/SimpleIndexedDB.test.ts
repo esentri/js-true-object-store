@@ -3,6 +3,7 @@ import {SimpleIndexedDBBuilder} from '../src/SimpleIndexedDBBuilder'
 import {SimpleIndexedDB} from '../src/SimpleIndexedDB'
 import {TrueObjectStoreBuilder} from '../src/TrueObjectStoreBuilder'
 import {Deserializer} from '@esentri/de-serializer'
+import {Serializer} from "typedoc/dist/lib/serialization";
 
 describe('SimpleIndexedDB Test', () => {
 
@@ -82,6 +83,31 @@ describe('SimpleIndexedDB Test', () => {
          .build()
       simpleIndexedDB.open().catch((error: any) => {
          done()
+      })
+   })
+
+   it('clear stores', done => {
+      let objectStore = new TrueObjectStoreBuilder()
+         .name('store')
+         .deserializer(Deserializer.simple(String))
+         .parameters({keyPath: 'test', autoIncrement: true})
+         .build()
+      let simpleIndexedDB = new SimpleIndexedDBBuilder()
+         .name('testDB7')
+         .dbVersion(1)
+         .databaseFactory(IndexDB.default)
+         .objectStores([objectStore])
+         .build()
+      simpleIndexedDB.open().then(() => {
+         objectStore.save({test: 'test'}).then(() => {
+            simpleIndexedDB.clear()
+            let request = objectStore['database'].transaction('store', 'readwrite')
+               .objectStore('store').count()
+            request.onsuccess = function () {
+               expect(request.result).toBe(0)
+               done()
+            }
+        })
       })
    })
 
